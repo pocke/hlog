@@ -1,7 +1,9 @@
 package hlog
 
 import (
+	"bufio"
 	"log"
+	"net"
 	"net/http"
 )
 
@@ -13,6 +15,11 @@ type statusLoggingResponseWriter struct {
 func (w *statusLoggingResponseWriter) WriteHeader(code int) {
 	w.status = code
 	w.ResponseWriter.WriteHeader(code)
+}
+
+func (w *statusLoggingResponseWriter) Hijack() (net.Conn, *bufio.ReadWriter, error) {
+	hijacker := w.ResponseWriter.(http.Hijacker)
+	return hijacker.Hijack()
 }
 
 // check interface
