@@ -24,6 +24,7 @@ func (w *statusLoggingResponseWriter) Hijack() (net.Conn, *bufio.ReadWriter, err
 
 // check interface
 var _ http.ResponseWriter = &statusLoggingResponseWriter{}
+var _ http.Hijacker = &statusLoggingResponseWriter{}
 
 func Wrap(f http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
